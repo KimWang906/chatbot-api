@@ -27,3 +27,11 @@ pip3 install sentence_transformers
 ```sh
 python3 app.py
 ```
+
+Json 형식
+
+```json
+{
+    "buffer": ""
+}
+```
