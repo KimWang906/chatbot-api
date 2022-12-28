@@ -1,11 +1,56 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <script>
+      const send = async () => {
+        try {
+          const name = document.getElementById("txtarea").value;
+          const res = await axios.post("http://localhost:8080/chatbot", {
+            buffer: name,
+          });
+          const bot_res = res.data.bot_answer;
+          const user_res = res.data.user_question;
+          let today = new Date();   
+          let current_time = today.getHours() + ":" + today.getMinutes();
+
+          let user_template = `<li class="self">
+                <div class="avatar"><img src="./pictures/sori.png" draggable="false" /></div>
+                    <div class="msg">
+                        <p>${user_res}</p>
+                    <time>${current_time}</time>
+                </div>
+            </li>`;
+
+          let bot_template = `<li class="other">
+                <div class="avatar"><img src="./pictures/ari.png" draggable="false" /></div>
+                    <div class="msg">
+                    <p>${bot_res}</p>
+                    <time>${current_time}</time>
+                </div>
+            </li>`;
+
+          document.getElementById("chat_area").innerHTML += user_template;
+          document.getElementById("chat_area").innerHTML += bot_template;
+          document.getElementById("txtarea").value = "";
+        } catch (err) {
+          console.log("Error >> ", err);
+        }
+      };
+    </script>
     <title>BSSM Chatbot</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <div class="menu">
+      <div class="bot_info"><img src="./pictures/ari.png" draggable="false" /></div>
+      <div class="name">BSSM Chatbot</div>
+      <div class="comment">안녕하세요 부산 소마고 챗봇입니다! 뭐든 물어보세요~</div>
+    </div>
+    <ol id="chat_area" class="chat"></ol>
+    <input id="txtarea" class="textarea" type="text" placeholder="이곳에 입력해주세요.." onkeypress="if(window.event.keyCode==13) send();" />
+    <div class="emojis"></div>
+  </body>
 </html>
